@@ -1,7 +1,13 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 #
-#
+# Vagrant installation:
+# sudo dnf config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+# sudo dnf install -y vagrant
+# sudo dnf config-manager --set-enabled crb
+# sudo dnf install -y libvirt-devel
+# vagrant plugin install vagrant-libvirt
+
 
 #Script for creating kvm (Kernel native) vm's for kubernetes
 #best be doing this on a fresh box lest things get cattywampus
@@ -9,15 +15,15 @@
 
 #Net work prefix in which a single digit is appended
 #ex 192.168.1.5 will have a master at 192.168.1.50 and workers starting from 192.168.1.51
-NETWORK_PREFIX="192.168.11.12"
+NETWORK_PREFIX="192.168.65.70"
 
 #make sure libvirt, qemu, kvm etc are installed
 #make sure other hypervisers such as virtualbox are not
 ENV['VAGRANT_DEFAULT_PROVIDER'] = 'libvirt'
-IMAGE_NAME = "generic/ubuntu1804"
+IMAGE_NAME = "generic/ubuntu2204"
 
 #right now NUM_NODES must be under 9
-NUM_NODES = 3 
+NUM_NODES = 3
 
 Vagrant.configure("2") do |config|
     config.ssh.insert_key = false
@@ -31,7 +37,7 @@ Vagrant.configure("2") do |config|
     config.vm.define "master1" do |master|
         master.vm.box = IMAGE_NAME
 	    master.vm.network :public_network,
-             :dev => "br0",
+             :dev => "br1",
              :mode => "bridge",
              :type => "bridge",
 	     :ip => "#{NETWORK_PREFIX}0"
@@ -42,7 +48,7 @@ Vagrant.configure("2") do |config|
         config.vm.define "worker-#{i}" do |node|
             node.vm.box = IMAGE_NAME
               node.vm.network :public_network,
-              :dev => "br0",
+              :dev => "br1",
               :mode => "bridge",
               :type => "bridge",
               :ip => "#{NETWORK_PREFIX}#{i}"
