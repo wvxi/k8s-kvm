@@ -47,6 +47,16 @@ One is needed for the master and must end in 0.  Then one for each worker node s
 ## Install dependencies
 ```
 apt-get install -qy qemu-kvm libvirt-bin virtinst bridge-utils cpu-checker python3 vagrant ansible
+
+
+On Rocky Linux:
+
+sudo dnf install epel-release
+sudo dnf install gcc make perl kernel-devel kernel-headers bzip2 dkms elfutils-libelf-devel
+sudo dnf install libvirt-devel
+vagrant plugin install vagrant-libvirt
+vagrant box add generic/ubuntu2204 --provider=libvirt
+sudo usermod -a -G libvirt maxi
 ```
 
 ## Create a bridge

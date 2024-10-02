@@ -2,4 +2,4 @@
 
 [kube-nodes]
 #master1.kube.local ansible_host=192.168.11.121
-worker2.kube.local ansible_host=192.168.11.123
+#worker2.kube.local ansible_host=192.168.11.124
